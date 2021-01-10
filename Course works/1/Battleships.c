@@ -1,4 +1,4 @@
-/// Antonii 121220083 9p 41gr PIK1 Kursova rabota Zadanie 10
+/// Antonii Zlatarov 121220083 9p 41gr PIK1 Kursova rabota zadanie 10
 
 #include<stdio.h>
 #include<windows.h>
@@ -32,7 +32,7 @@ void beginTurnFights();
 void checkWinConditions();
 void initGameField(int entity);
 void printGameField(int entity);
-void attackCell(int col, int row, int entityAttacker, int entityDefender);
+void attackCell(int col, int row, int entityDefender);
 void placeShipAt(int col, int row, int shipSize, int entity, int orientation);
 
 int canAttackCell(int col, int row, int entityDefender);
@@ -308,12 +308,12 @@ int canAttackCell(int col, int row, int entityDefender)
     return 1;
 }
 
-void attackCell(int col, int row, int entityAttacker, int entityDefender)
+void attackCell(int col, int row, int entityDefender)
 {
     if(gameField[col][row][entityDefender] == SHIP_CELL)
     {
         gameField[col][row][entityDefender] = SHIP_HIT_CELL;
-        currentShipHits[entityAttacker]++;
+        currentShipHits[!entityDefender]++;
     }
     else if (gameField[col][row][entityDefender] == EMPTY_CELL)
     {
@@ -326,7 +326,7 @@ void beginTurnFights()
 
     int currentTurn = 1, nextToAttack = rand()%2;
 
-    while(currentShipHits[PLAYER] < hitsToWin || currentShipHits[COMPUTER] < hitsToWin)
+    while(currentShipHits[PLAYER] < hitsToWin && currentShipHits[COMPUTER] < hitsToWin)
     {
         system("cls");
         printGameField(PLAYER);
@@ -351,7 +351,7 @@ void beginTurnFights()
                 printf("target y : ");
                 scanf("%d", &row);
             }
-            attackCell(col, row, PLAYER, COMPUTER);
+            attackCell(col, row, COMPUTER);
 
             if(gameField[col][row][COMPUTER] == SHIP_HIT_CELL)
             {
@@ -378,7 +378,7 @@ void beginTurnFights()
                 row = rand() % GAME_FIELD_ROWS;
             }
 
-            attackCell(col, row, COMPUTER, PLAYER);
+            attackCell(col, row, PLAYER);
 
             if(gameField[col][row][PLAYER] == SHIP_HIT_CELL)
             {
